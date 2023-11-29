@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CleanArchitecture.Domain.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace CleanArchitecture.Domain.Entities
     {
         public Immobilier()
         {
-            Id = "kd";
+            Id = Helper.Code(20);
         }
 
         public string Id { get; set; }

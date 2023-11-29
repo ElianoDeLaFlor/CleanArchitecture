@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Response
 {
-    public class ServiceResponse<T> where T : class
+    public class ServiceResponse<T> 
     {
         public T? Data { get; set; }
         public bool Success { get; set; }
