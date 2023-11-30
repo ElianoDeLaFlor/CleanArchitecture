@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Response;
+﻿using CleanArchitecture.Domain.Response;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces;
 using System;
