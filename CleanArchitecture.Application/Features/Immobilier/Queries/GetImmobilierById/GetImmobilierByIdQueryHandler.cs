@@ -1,4 +1,4 @@
-﻿
+﻿using CleanArchitecture.Domain.Repositories;
 using CleanArchitecture.Domain.Response;
 using CleanArchitecture.Persistence.Repositories;
 using MediatR;
@@ -14,9 +14,9 @@ namespace CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilie
     public class GetImmobilierByIdQueryHandler : IRequestHandler<GetImmobilierByIdQuery, ServiceResponse<Entity.Immobilier>>
     {
         //repository injection
-        private readonly ImmobilierRepository _immobilierRepository;
+        private readonly IImmobilierRepository _immobilierRepository;
 
-        public GetImmobilierByIdQueryHandler(ImmobilierRepository repository)
+        public GetImmobilierByIdQueryHandler(IImmobilierRepository repository)
         {
             _immobilierRepository = repository;
         }
