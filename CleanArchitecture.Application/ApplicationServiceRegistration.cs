@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier;
+using CleanArchitecture.Application.Mappers;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,11 @@ namespace CleanArchitecture.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(ApplicationAutoMapperEntryPoint).Assembly); 
+            //services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            //services.AddAutoMapper(typeof(ApplicationAutoMapperEntryPoint).Assembly); 
+            services.AddMediatR(config=>config.RegisterServicesFromAssemblies(typeof(ApplicationMediatrEntryPoint).Assembly));
+            services.AddScoped<IValidator<CreateImmobilierCommand>, ImmobilierValidator>();
 
             return services;
         }
