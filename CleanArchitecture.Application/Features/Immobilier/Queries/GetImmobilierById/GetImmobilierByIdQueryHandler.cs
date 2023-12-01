@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Response;
+﻿
 using CleanArchitecture.Domain.Response;
 using CleanArchitecture.Persistence.Repositories;
 using MediatR;
