@@ -61,9 +61,28 @@ namespace CleanArchitecture.Persistence.Repositories
             }
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> AllAsync(bool published)
+        public async Task<ServiceResponse<List<Immobilier>>> AllAsync(bool published)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var rslt = await (from item in _context.immobiliers where item.Publier == true select item).ToListAsync();
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = rslt;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<Immobilier>> CreateAsync(Immobilier entity)
