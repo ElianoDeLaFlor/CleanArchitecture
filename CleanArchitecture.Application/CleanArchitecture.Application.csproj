@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Immobilier\Commands\" />
     <Folder Include="Mappers\" />
     <Folder Include="Response\" />
   </ItemGroup>
