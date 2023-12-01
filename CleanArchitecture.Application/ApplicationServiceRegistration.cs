@@ -11,7 +11,7 @@ namespace CleanArchitecture.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-                        
+            services.AddAutoMapper(typeof(ApplicationAutoMapperEntryPoint).Assembly); 
 
             return services;
         }
