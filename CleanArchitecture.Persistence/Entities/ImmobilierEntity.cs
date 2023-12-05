@@ -5,16 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Entities
+namespace CleanArchitecture.Persistence.Entities
 {
-    public class Immobilier
+    public class ImmobilierEntity
     {
-        public Immobilier()
-        {
-            Id = Helper.Code(28);
-        }
 
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public string Reff { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Localisation { get; set; } = string.Empty;

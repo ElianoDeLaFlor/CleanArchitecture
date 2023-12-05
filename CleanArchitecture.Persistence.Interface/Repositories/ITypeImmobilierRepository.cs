@@ -1,13 +1,14 @@
 ﻿using CleanArchitecture.Domain.Response;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Persistence.Entities;
+using CleanArchitecture.Persistence.Interfaces;
+using CleanArchitecture.Domain.Models;
 
-namespace CleanArchitecture.Domain.Repositories
+namespace CleanArchitecture.Persistence.Repositories
 {
     public interface ITypeImmobilierRepository:IGenericRepository<TypeImmobilier>
     {

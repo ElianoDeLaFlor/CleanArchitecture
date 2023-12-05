@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Entities
+namespace CleanArchitecture.Persistence.Entities
 {
-    public class TypeVente
+    public class TypeVenteEntity
     {
         public int Id { get; set; }
         public string Label { get; set; } = "";

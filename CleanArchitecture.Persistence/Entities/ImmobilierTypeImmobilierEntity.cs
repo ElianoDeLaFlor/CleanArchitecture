@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Entities
+namespace CleanArchitecture.Persistence.Entities
 {
-    public class ImmobilierTypeImmobilier
+    public class ImmobilierTypeImmobilierEntity
     {
         public int Id { get; set; }
         public int TypeImmobilierId { get; set; }

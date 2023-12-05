@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Domain.Repositories;
-using CleanArchitecture.Persistence.Data;
+﻿using CleanArchitecture.Persistence.Data;
+using CleanArchitecture.Persistence.Interfaces;
 using CleanArchitecture.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

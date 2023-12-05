@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Entity = CleanArchitecture.Domain.Entities;
+using Entity = CleanArchitecture.Domain.Models;
 
 namespace CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier
 {

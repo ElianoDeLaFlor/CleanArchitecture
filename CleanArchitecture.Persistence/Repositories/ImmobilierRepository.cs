@@ -1,14 +1,9 @@
 ﻿using CleanArchitecture.Domain.Response;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Repositories;
 using CleanArchitecture.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CleanArchitecture.Domain.Utility;
+using CleanArchitecture.Persistence.Interfaces;
+using CleanArchitecture.Domain.Models;
 
 namespace CleanArchitecture.Persistence.Repositories
 {
@@ -16,50 +11,14 @@ namespace CleanArchitecture.Persistence.Repositories
     {
         private readonly DataContext _context;
         public ImmobilierRepository(DataContext context) { _context = context; }
-        public async Task<ServiceResponse<string>> AddPhotoAsync(Immobilier entity)
+        public Task<ServiceResponse<string>> AddPhotoAsync(Immobilier entity)
         {
-            ServiceResponse<string> response = new();
-            try
-            {
-                entity.DateDeModification = DateTime.Now;
-               _= await _context.immobiliers.AddAsync(entity);
-              _=  await _context.SaveChangesAsync();
-
-                response.Success = true;
-                response.Message = "Photo added successfully";
-                response.Data = entity.Photos;    
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = ex.Message;
-                response.Data = null;
-                return response;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<string>> AddVideoAsync(Immobilier entity)
+        public Task<ServiceResponse<string>> AddVideoAsync(Immobilier entity)
         {
-            ServiceResponse<string> response = new();
-            try
-            {
-                entity.DateDeModification = DateTime.Now;
-                _ = _context.Entry(entity).State=EntityState.Modified;
-                _ = await _context.SaveChangesAsync();
-
-                response.Success = true;
-                response.Message = "Photo added successfully";
-                response.Data = entity.Photos;
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = ex.Message;
-                response.Data = null;
-                return response;
-            }
+            throw new NotImplementedException();
         }
 
         public async Task<ServiceResponse<List<Immobilier>>> AllAsync(bool published)

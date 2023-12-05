@@ -1,8 +1,7 @@
 ﻿
 using AutoMapper;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Repositories;
 using CleanArchitecture.Domain.Response;
+using CleanArchitecture.Persistence.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -11,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Entity = CleanArchitecture.Domain.Entities;
+using Entity = CleanArchitecture.Domain.Models;
 
 namespace CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier
 {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Entities
+namespace CleanArchitecture.Application
 {
-    public class TypeImmobilier
+    public class ApplicationMediatrEntryPoint
     {
     }
 }

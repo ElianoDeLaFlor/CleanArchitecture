@@ -2,7 +2,7 @@
 using CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier;
 using CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilierById;
 using CleanArchitecture.Application.Mappers;
-using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Domain.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
