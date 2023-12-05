@@ -15,7 +15,7 @@ namespace CleanArchitecture.Domain.Repositories
         Task<ServiceResponse<string>> AddPhotoAsync(Immobilier entity);
         Task<ServiceResponse<string>> AddVideoAsync(Immobilier entity);
         Task<ServiceResponse<bool>> PublishedAsync(string id, bool state);
-        Task<ServiceResponse<int>> DeleteByImmobilierAndTypeImmobilierAsync(string immobilierid, int typeimmobilierid);
+        Task<ServiceResponse<Immobilier>> DeleteByImmobilierAndTypeImmobilierAsync(string immobilierid, int typeimmobilierid);
         Task<ServiceResponse<int>> ImmobilierCount(bool state);
         Task<ServiceResponse<int>> ImmobilierCount();
         Task<ServiceResponse<int>> ImmobilierSearchCount(string criteria);

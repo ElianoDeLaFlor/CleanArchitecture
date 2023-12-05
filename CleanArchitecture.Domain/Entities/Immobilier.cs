@@ -11,7 +11,7 @@ namespace CleanArchitecture.Domain.Entities
     {
         public Immobilier()
         {
-            Id = Helper.Code(20);
+            Id = Helper.Code(28);
         }
 
         public string Id { get; set; }

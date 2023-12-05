@@ -1,4 +1,6 @@
 ﻿
+using AutoMapper;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Repositories;
 using CleanArchitecture.Domain.Response;
 using MediatR;
@@ -16,14 +18,20 @@ namespace CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmob
     public class CreateImmobilierCommandHandler : IRequestHandler<CreateImmobilierCommand, ServiceResponse<Entity.Immobilier>>
     {
         private readonly IImmobilierRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CreateImmobilierCommandHandler(IImmobilierRepository repository)
+        public CreateImmobilierCommandHandler(IImmobilierRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         public async Task<ServiceResponse<Entity.Immobilier>> Handle(CreateImmobilierCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            
+            
+                var immobilier = _mapper.Map<Entity.Immobilier>(request.ImmobilierDto);
+
+            return await _repository.CreateAsync(immobilier);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,14 @@ namespace CleanArchitecture.Application.Mappers
     {
         public AutoMapperProfile()
         {
-            CreateMap<Immobilier, ImmobilierDto>();
+            CreateMap<ImmobilierDto,Immobilier >()
+                .AfterMap(
+                    (dest, src) => {
+                        src.Id = Helper.Code(28);
+                        src.DateDeCreation= DateTime.Now;
+                        src.DateDeModification = src.DateDeCreation;
+                    }
+                );
         }
     }
 }

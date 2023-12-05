@@ -15,7 +15,6 @@ namespace CleanArchitecture.Application.Mappers
         public string Image { get; set; } = string.Empty;
         public string Photos { get; set; } = string.Empty;
         public string Video { get; set; } = string.Empty;
-        public bool Favorit { get; set; }
         public decimal Prix { get; set; }
         public string Avance { get; set; } = string.Empty;
         public string UtilisateurId { get; set; } = string.Empty;

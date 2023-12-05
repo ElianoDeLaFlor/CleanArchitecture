@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Response;
+﻿using CleanArchitecture.Domain.Repositories;
+using CleanArchitecture.Domain.Response;
 using CleanArchitecture.Persistence.Repositories;
 using MediatR;
 using System;
@@ -12,9 +13,9 @@ namespace CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilie
 {
     public class GetImmobilierByReffQueryHandler : IRequestHandler<GetImmobilierByReffQuery, ServiceResponse<Entity.Immobilier>>
     {
-        private readonly ImmobilierRepository _immobilierRepository;
+        private readonly IImmobilierRepository _immobilierRepository;
 
-        public GetImmobilierByReffQueryHandler(ImmobilierRepository repository)
+        public GetImmobilierByReffQueryHandler(IImmobilierRepository repository)
         {
             _immobilierRepository = repository;
         }

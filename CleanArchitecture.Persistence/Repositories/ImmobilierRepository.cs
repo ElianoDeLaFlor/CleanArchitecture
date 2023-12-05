@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Utility;
 
 namespace CleanArchitecture.Persistence.Repositories
 {
@@ -85,24 +86,157 @@ namespace CleanArchitecture.Persistence.Repositories
             }
         }
 
-        public Task<ServiceResponse<Immobilier>> CreateAsync(Immobilier entity)
+        public async Task<ServiceResponse<Immobilier>> CreateAsync(Immobilier entity)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                entity.DateDeCreation= DateTime.Now;
+                entity.DateDeModification=entity.DateDeCreation;
+                entity.Reff = Helper.Code(8);
+
+                _= await _context.immobiliers.AddAsync(entity);
+
+                _=_context.SaveChanges();
+                
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
-        public Task<ServiceResponse<Immobilier>> DeleteAsync(string id)
+        public async Task<ServiceResponse<Immobilier>> DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var itemToDelete = await _context.immobiliers.FindAsync(id);
+
+                if(itemToDelete != null)
+                {
+                    _ = _context.immobiliers.Remove(itemToDelete);
+
+                    _context.SaveChanges();
+
+                    response.Success = true;
+                    response.Message = "Operation complete successfully";
+                    response.Data = itemToDelete;
+
+                    return response;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Item to delete can not be find";
+                    response.Data = null;
+                    return response;
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                response.Success=false;
+                response.Message = ex.Message;
+                response.Data = null;
+                return response;
+            }
         }
 
-        public Task<ServiceResponse<int>> DeleteByImmobilierAndTypeImmobilierAsync(string immobilierid, int typeimmobilierid)
+        public async Task<ServiceResponse<Immobilier>> DeleteByImmobilierAndTypeImmobilierAsync(string immobilierid, int typeimmobilierid)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var itemToDelete = await (from item in _context.immobiliers where item.Id==immobilierid && item.TypeImmobilier==typeimmobilierid select item).SingleAsync();
+
+                if (itemToDelete != null)
+                {
+                    _ = _context.immobiliers.Remove(itemToDelete);
+
+                    _context.SaveChanges();
+
+                    response.Success = true;
+                    response.Message = "Operation complete successfully";
+                    response.Data = itemToDelete;
+
+                    return response;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Item to delete can not be find";
+                    response.Data = null;
+                    return response;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+                return response;
+            }
         }
 
-        public Task<ServiceResponse<Immobilier>> DuplicateImmobilier(string immobilierId)
+        public async Task<ServiceResponse<Immobilier>> DuplicateImmobilier(string immobilierId)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Immobilier> response = new();
+
+            try
+            {
+                //get immobilier to duplicate
+                var itemToDuplicate= await _context.immobiliers.Where(i=>i.Id==immobilierId).SingleAsync();
+                
+                if (itemToDuplicate != null)
+                {
+                    var itemDuplicated=new Immobilier();
+                    itemDuplicated = itemToDuplicate;
+                    itemDuplicated.DateDeCreation = DateTime.Now;
+                    itemDuplicated.DateDeModification = itemDuplicated.DateDeCreation;
+                    itemDuplicated.Favorit = false;
+                    itemDuplicated.Publier = false;
+                    itemDuplicated.Finaliser = false;
+                    itemDuplicated.Reff = Helper.Code(8);
+
+                    _=_context.Add(itemDuplicated);
+
+                    response.Success = true;
+                    response.Message = "Item duplicate successfully";
+                    response.Data = itemDuplicated;
+
+                    return response;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Item to duplicate can not be find";
+                    response.Data = null;
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = true;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<List<Immobilier>>> GetAllAsync()
@@ -110,9 +244,28 @@ namespace CleanArchitecture.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<Immobilier>> GetByIdAsync(string id)
+        public async Task<ServiceResponse<Immobilier>> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var rslt = await(from item in _context.immobiliers where item.Id == id select item).SingleAsync();
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = rslt;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<Immobilier>> GetByReffAsync(string label)
