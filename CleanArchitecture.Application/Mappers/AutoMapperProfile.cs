@@ -16,7 +16,6 @@ namespace CleanArchitecture.Application.Mappers
             CreateMap<ImmobilierDto,Immobilier >()
                 .AfterMap(
                     (dest, src) => {
-                        src.Id = Helper.Code(28);
                         src.DateDeCreation= DateTime.Now;
                     }
                 );
