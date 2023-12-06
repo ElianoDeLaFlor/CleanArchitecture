@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Domain.Models;
+using CleanArchitecture.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace CleanArchitecture.Persistence.Data
     {
         public DataContext(DbContextOptions<DataContext> option) : base(option) { }
 
-        public DbSet<Immobilier> immobiliers { get; set; }
-        public DbSet<ImmobilierTypeImmobilier> immobilierTypeImmobiliers { get; set; }
-        public DbSet<ImmobilierTypeVente> immobilierVente { get; set; }
-        public DbSet<TypeImmobilier> typeImmobiliers { get; set; }
-        public DbSet<TypeVente> typeVentes { get; set; }
-        public DbSet<Utilisateur> Utilisateurs { get; set; }
+        internal DbSet<ImmobilierEntity> immobiliers { get; set; }
+        /*internal DbSet<ImmobilierTypeImmobilierEntity> immobilierTypeImmobiliers { get; set; }
+        internal DbSet<ImmobilierTypeVenteEntity> immobilierVente { get; set; }
+        internal DbSet<TypeImmobilierEntity> typeImmobiliers { get; set; }
+        internal DbSet<TypeVenteEntity> typeVentes { get; set; }
+        internal DbSet<UtilisateurEntity> Utilisateurs { get; set; }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
