@@ -4,13 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using CleanArchitecture.Domain.Utility;
 using CleanArchitecture.Persistence.Interfaces;
 using CleanArchitecture.Domain.Models;
+using AutoMapper;
+using CleanArchitecture.Persistence.Entities;
 
 namespace CleanArchitecture.Persistence.Repositories
 {
     public class ImmobilierRepository : IImmobilierRepository
     {
         private readonly DataContext _context;
-        public ImmobilierRepository(DataContext context) { _context = context; }
+        private readonly IMapper _mapper;
+
+        public ImmobilierRepository(DataContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
         public Task<ServiceResponse<string>> AddPhotoAsync(Immobilier entity)
         {
             throw new NotImplementedException();
@@ -27,9 +35,12 @@ namespace CleanArchitecture.Persistence.Repositories
             try
             {
                 var rslt = await (from item in _context.immobiliers where item.Publier == true select item).ToListAsync();
+
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
+
                 response.Success = true;
                 response.Message = "Operation completed successfully";
-                response.Data = rslt;
+                response.Data = immobilier_entity;
 
                 return response;
 
@@ -54,10 +65,14 @@ namespace CleanArchitecture.Persistence.Repositories
                 entity.DateDeModification=entity.DateDeCreation;
                 entity.Reff = Helper.Code(8);
 
-                _= await _context.immobiliers.AddAsync(entity);
+                var immobilier_entity=_mapper.Map<ImmobilierEntity>(entity);
 
-                _=_context.SaveChanges();
-                
+
+
+                _= await _context.immobiliers.AddAsync(immobilier_entity);
+
+                _ = await _context.SaveChangesAsync();
+
                 response.Success = true;
                 response.Message = "Operation completed successfully";
                 response.Data = entity;
@@ -89,9 +104,11 @@ namespace CleanArchitecture.Persistence.Repositories
 
                     _context.SaveChanges();
 
+                    var immobilier_entity = _mapper.Map<Immobilier>(itemToDelete);
+
                     response.Success = true;
                     response.Message = "Operation complete successfully";
-                    response.Data = itemToDelete;
+                    response.Data = immobilier_entity;
 
                     return response;
                 }
@@ -125,11 +142,13 @@ namespace CleanArchitecture.Persistence.Repositories
                 {
                     _ = _context.immobiliers.Remove(itemToDelete);
 
-                    _context.SaveChanges();
+                    _=await _context.SaveChangesAsync();
+
+                    var immobilier_entity=_mapper.Map<Immobilier>(itemToDelete);
 
                     response.Success = true;
                     response.Message = "Operation complete successfully";
-                    response.Data = itemToDelete;
+                    response.Data = immobilier_entity;
 
                     return response;
                 }
@@ -163,7 +182,7 @@ namespace CleanArchitecture.Persistence.Repositories
                 
                 if (itemToDuplicate != null)
                 {
-                    var itemDuplicated=new Immobilier();
+                    var itemDuplicated=new ImmobilierEntity();
                     itemDuplicated = itemToDuplicate;
                     itemDuplicated.DateDeCreation = DateTime.Now;
                     itemDuplicated.DateDeModification = itemDuplicated.DateDeCreation;
@@ -171,12 +190,17 @@ namespace CleanArchitecture.Persistence.Repositories
                     itemDuplicated.Publier = false;
                     itemDuplicated.Finaliser = false;
                     itemDuplicated.Reff = Helper.Code(8);
+                    itemDuplicated.Id=Helper.Code(28);
 
                     _=_context.Add(itemDuplicated);
 
+                    _=await _context.SaveChangesAsync();
+
+                    var immobilier_entity = _mapper.Map<Immobilier>(itemDuplicated);
+
                     response.Success = true;
                     response.Message = "Item duplicate successfully";
-                    response.Data = itemDuplicated;
+                    response.Data = immobilier_entity;
 
                     return response;
                 }
@@ -209,9 +233,11 @@ namespace CleanArchitecture.Persistence.Repositories
             try
             {
                 var rslt = await(from item in _context.immobiliers where item.Id == id select item).SingleAsync();
+                var immobilier_entity=_mapper.Map<Immobilier>(rslt);
+                
                 response.Success = true;
                 response.Message = "Operation completed successfully";
-                response.Data = rslt;
+                response.Data = immobilier_entity;
 
                 return response;
 
