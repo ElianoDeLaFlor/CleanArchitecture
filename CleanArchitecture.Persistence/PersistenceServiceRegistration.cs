@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Persistence.Data;
+using CleanArchitecture.Persistence.Dto;
 using CleanArchitecture.Persistence.Interfaces;
 using CleanArchitecture.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace CleanArchitecture.Persistence
     {
         public static IServiceCollection AddPersistenceService(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddAutoMapper(typeof(EnityMapperProfile));
             services.AddDbContext<DataContext>(options=> options.UseSqlServer(configuration.GetConnectionString("")));
             services.AddScoped<IImmobilierRepository, ImmobilierRepository>();
             return services;
