@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Persistence.Entities
 {
-    public class ImmobilierTypeVenteEntity
+    internal class ImmobilierTypeVenteEntity
     {
         public int Id { get; set; }
         public int TypeVenteId { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Persistence.Entities
 {
-    public class UtilisateurEntity
+    internal class UtilisateurEntity
     {
         public string Id { get; set; } = string.Empty;
         public string Nom { get; set; } = string.Empty;

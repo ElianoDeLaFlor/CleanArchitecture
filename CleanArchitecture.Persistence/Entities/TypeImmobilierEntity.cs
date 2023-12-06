@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Persistence.Entities
 {
-    public class TypeImmobilierEntity
+    internal class TypeImmobilierEntity
     {
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Persistence.Entities
 {
-    public class ImmobilierEntity
+    internal class ImmobilierEntity
     {
 
         public string Id { get; set; } = string.Empty;
