@@ -13,9 +13,9 @@ namespace CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilie
 {
     public class GetImmobilierByIdQueryHandler : IRequestHandler<GetImmobilierByIdQuery, ServiceResponse<Entity.Immobilier>>
     {
-        //repository injection
         private readonly IImmobilierRepository _immobilierRepository;
 
+        //repository injection
         public GetImmobilierByIdQueryHandler(IImmobilierRepository repository)
         {
             _immobilierRepository = repository;

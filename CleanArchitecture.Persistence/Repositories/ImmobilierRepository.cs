@@ -34,7 +34,7 @@ namespace CleanArchitecture.Persistence.Repositories
             ServiceResponse<List<Immobilier>> response = new();
             try
             {
-                var rslt = await (from item in _context.immobiliers where item.Publier == true select item).ToListAsync();
+                var rslt = await (from item in _context.Immobiliers where item.Publier == true select item).ToListAsync();
 
                 var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
 
@@ -66,16 +66,17 @@ namespace CleanArchitecture.Persistence.Repositories
                 entity.Reff = Helper.Code(8);
 
                 var immobilier_entity=_mapper.Map<ImmobilierEntity>(entity);
+                
+
+                _= await _context.Set<ImmobilierEntity>().AddAsync(immobilier_entity);
+                _= await _context.SaveChangesAsync();
 
 
-
-                _= await _context.immobiliers.AddAsync(immobilier_entity);
-
-                _ = await _context.SaveChangesAsync();
-
+                var immobilier = _mapper.Map<Immobilier>(immobilier_entity);
+                
                 response.Success = true;
                 response.Message = "Operation completed successfully";
-                response.Data = entity;
+                response.Data = immobilier;
 
                 return response;
 
@@ -96,11 +97,11 @@ namespace CleanArchitecture.Persistence.Repositories
             ServiceResponse<Immobilier> response = new();
             try
             {
-                var itemToDelete = await _context.immobiliers.FindAsync(id);
+                var itemToDelete = await _context.Immobiliers.FindAsync(id);
 
                 if(itemToDelete != null)
                 {
-                    _ = _context.immobiliers.Remove(itemToDelete);
+                    _ = _context.Immobiliers.Remove(itemToDelete);
 
                     _context.SaveChanges();
 
@@ -136,11 +137,11 @@ namespace CleanArchitecture.Persistence.Repositories
             ServiceResponse<Immobilier> response = new();
             try
             {
-                var itemToDelete = await (from item in _context.immobiliers where item.Id==immobilierid && item.TypeImmobilier==typeimmobilierid select item).SingleAsync();
+                var itemToDelete = await (from item in _context.Immobiliers where item.Id==immobilierid && item.TypeImmobilier==typeimmobilierid select item).SingleAsync();
 
                 if (itemToDelete != null)
                 {
-                    _ = _context.immobiliers.Remove(itemToDelete);
+                    _ = _context.Immobiliers.Remove(itemToDelete);
 
                     _=await _context.SaveChangesAsync();
 
@@ -178,7 +179,7 @@ namespace CleanArchitecture.Persistence.Repositories
             try
             {
                 //get immobilier to duplicate
-                var itemToDuplicate= await _context.immobiliers.Where(i=>i.Id==immobilierId).SingleAsync();
+                var itemToDuplicate= await _context.Immobiliers.Where(i=>i.Id==immobilierId).SingleAsync();
                 
                 if (itemToDuplicate != null)
                 {
@@ -222,9 +223,30 @@ namespace CleanArchitecture.Persistence.Repositories
             }
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> GetAllAsync()
+        public async Task<ServiceResponse<List<Immobilier>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var result = await (from item in _context.Set<ImmobilierEntity>() select item).ToListAsync();
+                var dataList = _mapper.Map<List<Immobilier>>(result);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = dataList;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
+
         }
 
         public async Task<ServiceResponse<Immobilier>> GetByIdAsync(string id)
@@ -232,7 +254,7 @@ namespace CleanArchitecture.Persistence.Repositories
             ServiceResponse<Immobilier> response = new();
             try
             {
-                var rslt = await(from item in _context.immobiliers where item.Id == id select item).SingleAsync();
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.Id == id select item).SingleAsync();
                 var immobilier_entity=_mapper.Map<Immobilier>(rslt);
                 
                 response.Success = true;

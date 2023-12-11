@@ -12,9 +12,13 @@ namespace CleanArchitecture.Persistence.Data
 {
     public class DataContext:DbContext
     {
+        public DataContext()
+        {
+            
+        }
         public DataContext(DbContextOptions<DataContext> option) : base(option) { }
 
-        internal DbSet<ImmobilierEntity> immobiliers { get; set; }
+        internal DbSet<ImmobilierEntity> Immobiliers { get; set; }
         /*internal DbSet<ImmobilierTypeImmobilierEntity> immobilierTypeImmobiliers { get; set; }
         internal DbSet<ImmobilierTypeVenteEntity> immobilierVente { get; set; }
         internal DbSet<TypeImmobilierEntity> typeImmobiliers { get; set; }
@@ -24,6 +28,12 @@ namespace CleanArchitecture.Persistence.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure entity mappings, relationships, etc.
+            
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            
         }
     }
 }
