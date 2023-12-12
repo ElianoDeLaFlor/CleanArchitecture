@@ -45,5 +45,59 @@ namespace CleanArchitecture.Test.Immobilier.Queries
             result.ShouldBeOfType<ServiceResponse<Entity.Immobilier>>();
             result.Data?.Id.ShouldBe(id);
         }
+
+        [Fact]
+        public async Task Handle_ValideId_ResturnsSuccess()
+        {
+            //Arrange
+            var expected = new ServiceResponse<Entity.Immobilier>
+            {
+                Data = new Entity.Immobilier { Id = "1" },
+                Success = true,
+                Message = "Success"
+            };
+
+            //var _reposMock=new Mock<IImmobilierRepository>();
+            _mockImmobilierRepository.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
+                                     .Returns(Task.FromResult(expected));
+
+            var request = new GetImmobilierByIdQuery("1");
+            var handler=new GetImmobilierByIdQueryHandler(_mockImmobilierRepository.Object);
+            //Act
+            var actual = await handler.Handle(request, CancellationToken.None);
+
+            //Assert
+            actual.ShouldNotBeNull();
+            actual.Data?.Id.ShouldBe("1");
+            actual.Success.ShouldBeTrue();
+            actual.Message.ShouldBe(expected.Message);
+        }
+
+        [Fact]
+        public async Task Handle_InvalideId_ResturnsError()
+        {
+            //Arrange
+            var expected = new ServiceResponse<Entity.Immobilier>
+            {
+                Data = new Entity.Immobilier { Id = "1" },
+                Success = false,
+                Message = "error"
+            };
+
+            //var _reposMock=new Mock<IImmobilierRepository>();
+            _mockImmobilierRepository.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
+                                     .Returns(Task.FromResult(expected));
+
+            var request = new GetImmobilierByIdQuery("1");
+            var handler = new GetImmobilierByIdQueryHandler(_mockImmobilierRepository.Object);
+            //Act
+            var actual = await handler.Handle(request, CancellationToken.None);
+
+            //Assert
+            actual.ShouldNotBeNull();
+            actual.Data?.Id.ShouldBe("1");
+            actual.Success.ShouldBeFalse();
+            actual.Message.ShouldBe(expected.Message);
+        }
     }
 }

@@ -350,7 +350,7 @@ namespace CleanArchitecture.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<Immobilier>> UpdateAsync(Immobilier entity)
+        public Task<ServiceResponse<Immobilier>> UpdateAsync(string id, Immobilier entity)
         {
             throw new NotImplementedException();
         }

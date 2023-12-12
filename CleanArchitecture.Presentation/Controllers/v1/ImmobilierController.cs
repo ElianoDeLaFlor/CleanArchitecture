@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier;
+using CleanArchitecture.Application.Features.Immobilier.Queries.GetAllImmobilier;
 using CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilierById;
 using CleanArchitecture.Application.Mappers;
 using CleanArchitecture.Domain.Models;
@@ -25,11 +26,20 @@ namespace CleanArchitecture.Presentation.Controllers.v1
 
         // GET: api/<ImmobilierController>
         [HttpGet]
-        public Task<ServiceResponse<List<Immobilier>>> Get()
+        public async Task<IActionResult> Get()
         {
-            //ServiceResponse<List<Immobilier>> response=new();
-            //response= await _mediator.Send(new)
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response=new();
+            response = await _mediator.Send(new GetAllImmobilierQuery());
+            return response.Success == true ? Ok(response) : BadRequest(response);
+        }
+
+        // GET: api/<ImmobilierController>
+        [HttpGet("published/{published}")]
+        public async Task<IActionResult> GetPushed(bool published)
+        {
+            ServiceResponse<List<Immobilier>> response = new();
+            response = await _mediator.Send(new GetAllImmobilierQuery(published));
+            return response.Success == true ? Ok(response) : BadRequest(response);
         }
 
         // GET api/<ImmobilierController>/5
@@ -50,19 +60,20 @@ namespace CleanArchitecture.Presentation.Controllers.v1
 
             return response.Success==true?Ok(response):BadRequest(response);
 
-
         }
 
         // PUT api/<ImmobilierController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, ImmobilierDto immobilier)
         {
+            throw new NotImplementedException();
         }
 
         // DELETE api/<ImmobilierController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            throw new NotImplementedException();
         }
     }
 }

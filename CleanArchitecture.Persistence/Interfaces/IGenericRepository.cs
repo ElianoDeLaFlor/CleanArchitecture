@@ -12,7 +12,7 @@ namespace CleanArchitecture.Persistence.Interfaces
         Task<ServiceResponse<T>> GetByIdAsync(string id);
         Task<ServiceResponse<List<T>>> GetAllAsync();
         Task<ServiceResponse<T>> CreateAsync(T entity);
-        Task<ServiceResponse<T>> UpdateAsync(T entity);
+        Task<ServiceResponse<T>> UpdateAsync(string id,T entity);
         Task<ServiceResponse<T>> DeleteAsync(string id);
     }
 }

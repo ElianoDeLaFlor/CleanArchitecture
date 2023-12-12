@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier;
+using CleanArchitecture.Application.Features.Immobilier.Commands.UpdateImmobilier;
 using CleanArchitecture.Application.Mappers;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ namespace CleanArchitecture.Application
             //services.AddAutoMapper(typeof(ApplicationAutoMapperEntryPoint).Assembly); 
             services.AddMediatR(config=>config.RegisterServicesFromAssemblies(typeof(ApplicationMediatrEntryPoint).Assembly));
             services.AddScoped<IValidator<CreateImmobilierCommand>, ImmobilierValidator>();
+            services.AddScoped<IValidator<UpdateImmobilierCommand>, UpdateImmobilierValidator>();
 
             return services;
         }

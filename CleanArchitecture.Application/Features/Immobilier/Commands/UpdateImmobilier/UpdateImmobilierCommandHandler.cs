@@ -30,12 +30,12 @@ namespace CleanArchitecture.Application.Features.Immobilier.Commands.UpdateImmob
         public async Task<ServiceResponse<Entity.Immobilier>> Handle(UpdateImmobilierCommand request, CancellationToken cancellationToken)
         {
             //validate the data
-            var result = await _validator.ValidateAsync(request);
+            var result = await _validator.ValidateAsync(request, cancellationToken);
             
             if (result.IsValid)
             {
                 var immobilier = _mapper.Map<Entity.Immobilier>(request.ImmobilierDto);
-                return await _repository.UpdateAsync(immobilier);
+                return await _repository.UpdateAsync(request.Id,immobilier);
             }
 
             var response = new ServiceResponse<Entity.Immobilier>

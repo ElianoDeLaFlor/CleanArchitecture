@@ -76,8 +76,6 @@ namespace CleanArchitecture.Test.Immobilier
         [Fact]
         public async Task CreateAsync_NormalInsertion_AddNewItemToTheDatabase()
         {
-
-
             // Arrange
             var mockMapper = new Mock<IMapper>();
             var mockContext = new Mock<DataContext>();

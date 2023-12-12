@@ -31,7 +31,7 @@ namespace CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmob
         public async Task<ServiceResponse<Entity.Immobilier>> Handle(CreateImmobilierCommand request, CancellationToken cancellationToken)
         {
             //validate the data
-            var result= await _validator.ValidateAsync(request);
+            var result= await _validator.ValidateAsync(request, cancellationToken);
 
             if(result.IsValid)
             {

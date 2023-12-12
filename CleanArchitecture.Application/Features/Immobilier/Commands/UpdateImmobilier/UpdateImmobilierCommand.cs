@@ -10,5 +10,5 @@ using Entity = CleanArchitecture.Domain.Models;
 
 namespace CleanArchitecture.Application.Features.Immobilier.Commands.UpdateImmobilier
 {
-    public record UpdateImmobilierCommand(ImmobilierDto ImmobilierDto) : IRequest<ServiceResponse<Entity.Immobilier>>;
+    public record UpdateImmobilierCommand(string Id,ImmobilierDto ImmobilierDto) : IRequest<ServiceResponse<Entity.Immobilier>>;
 }

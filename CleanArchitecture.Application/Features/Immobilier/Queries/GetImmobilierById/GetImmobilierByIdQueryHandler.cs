@@ -23,7 +23,8 @@ namespace CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilie
 
         public async Task<ServiceResponse<Entity.Immobilier>> Handle(GetImmobilierByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _immobilierRepository.GetByIdAsync(request.Id);
+            var r= await _immobilierRepository.GetByIdAsync(request.Id);
+            return r;
         }
     }
 
