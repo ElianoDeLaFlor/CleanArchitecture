@@ -156,7 +156,7 @@ namespace CleanArchitecture.Test.Immobilier
         }
 
         [Fact]
-        public async void GetByIdAsync_ReturnOneItemFromTheDatabase()
+        public async Task GetByIdAsync_ReturnOneItemFromTheDatabase()
         {
             //Arrange
             _imapperMock.Setup(mapper => mapper.Map<Entity.Immobilier>(It.IsAny<ImmobilierEntity>()))
@@ -175,7 +175,7 @@ namespace CleanArchitecture.Test.Immobilier
         }
 
         [Fact]
-        public async void GetByIdAsync_NoElement_ShouldReturnNullData()
+        public async Task GetByIdAsync_NoElement_ShouldReturnNullData()
         {
             //Arrange
             var expected = false;

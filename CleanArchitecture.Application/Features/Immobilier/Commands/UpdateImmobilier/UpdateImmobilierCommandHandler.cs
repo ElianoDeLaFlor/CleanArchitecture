@@ -1,11 +1,9 @@
-﻿
-using AutoMapper;
-using Azure;
+﻿using AutoMapper;
+using CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier;
 using CleanArchitecture.Domain.Response;
 using CleanArchitecture.Persistence.Interfaces;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,30 +12,30 @@ using System.Threading.Tasks;
 
 using Entity = CleanArchitecture.Domain.Models;
 
-namespace CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier
+namespace CleanArchitecture.Application.Features.Immobilier.Commands.UpdateImmobilier
 {
-    public class CreateImmobilierCommandHandler : IRequestHandler<CreateImmobilierCommand, ServiceResponse<Entity.Immobilier>>
+    public class UpdateImmobilierCommandHandler : IRequestHandler<UpdateImmobilierCommand, ServiceResponse<Entity.Immobilier>>
     {
         private readonly IImmobilierRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IValidator<CreateImmobilierCommand> _validator;
+        private readonly IValidator<UpdateImmobilierCommand> _validator;
 
-        public CreateImmobilierCommandHandler(IImmobilierRepository repository, IMapper mapper, IValidator<CreateImmobilierCommand> validator)
+        public UpdateImmobilierCommandHandler(IImmobilierRepository repository, IMapper mapper, IValidator<UpdateImmobilierCommand> validator)
         {
-            _repository = repository;
             _mapper = mapper;
+            _repository = repository;
             _validator = validator;
         }
-        public async Task<ServiceResponse<Entity.Immobilier>> Handle(CreateImmobilierCommand request, CancellationToken cancellationToken)
+
+        public async Task<ServiceResponse<Entity.Immobilier>> Handle(UpdateImmobilierCommand request, CancellationToken cancellationToken)
         {
             //validate the data
-            var result= await _validator.ValidateAsync(request);
-
-            if(result.IsValid)
+            var result = await _validator.ValidateAsync(request);
+            
+            if (result.IsValid)
             {
                 var immobilier = _mapper.Map<Entity.Immobilier>(request.ImmobilierDto);
-
-                return await _repository.CreateAsync(immobilier);
+                return await _repository.UpdateAsync(immobilier);
             }
 
             var response = new ServiceResponse<Entity.Immobilier>
@@ -47,7 +45,6 @@ namespace CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmob
                 Data = null
             };
             return response;
-                
         }
     }
 }

@@ -44,6 +44,15 @@ namespace CleanArchitecture.Test.Mocks
             return mockrepo;
         }
 
+        public static Mock<IImmobilierRepository> AddImmobillierWithError(Entity.Immobilier immobilier)
+        {
+            var mockrepo = new Mock<IImmobilierRepository>();
+            mockrepo.Setup(x => x.CreateAsync(It.IsAny<Entity.Immobilier>()))
+                .Returns(CreateErrorImmobilier(immobilier));
+
+            return mockrepo;
+        }
+
         public static Mock<IImmobilierRepository> GetAllImmobillier()
         {
             var mockrepo = new Mock<IImmobilierRepository>();
@@ -96,6 +105,16 @@ namespace CleanArchitecture.Test.Mocks
             var response = new ServiceResponse<Entity.Immobilier>();
 
             dataList.Add(immobilier);
+
+            response.Success = true;
+            response.Message = "OK";
+            response.Data = immobilier;
+            return Task.FromResult(response);
+        }
+
+        private static Task<ServiceResponse<Entity.Immobilier>> CreateErrorImmobilier(Entity.Immobilier immobilier)
+        {
+            var response = new ServiceResponse<Entity.Immobilier>();
 
             response.Success = true;
             response.Message = "OK";
