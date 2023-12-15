@@ -14,7 +14,7 @@ namespace CleanArchitectureSpecFlow.StepDefinitions
             // additional string/Table parameters can be defined on the step definition
             // method. 
 
-            throw new PendingStepException();
+            
         }
 
         [Given("the second number is (.*)")]
@@ -22,7 +22,7 @@ namespace CleanArchitectureSpecFlow.StepDefinitions
         {
             //TODO: implement arrange (precondition) logic
 
-            throw new PendingStepException();
+            
         }
 
         [When("the two numbers are added")]
@@ -30,7 +30,7 @@ namespace CleanArchitectureSpecFlow.StepDefinitions
         {
             //TODO: implement act (action) logic
 
-            throw new PendingStepException();
+            
         }
 
         [Then("the result should be (.*)")]
@@ -38,7 +38,7 @@ namespace CleanArchitectureSpecFlow.StepDefinitions
         {
             //TODO: implement assert (verification) logic
 
-            throw new PendingStepException();
+            Assert.Equal(120, result);
         }
     }
 }
