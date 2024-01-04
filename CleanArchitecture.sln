@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Presentat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastucture", "CleanArchitecture.Infrastucture\CleanArchitecture.Infrastucture.csproj", "{BBBEEF9D-E61A-4967-AF88-86A0A1E7EE30}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Test", "CleanArchitecture.Test\CleanArchitecture.Test.csproj", "{EE824E21-392C-4541-B76F-73BB6A1B9D0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitectureSpecFlow", "CleanArchitectureSpecFlow\CleanArchitectureSpecFlow.csproj", "{5E4A7D7B-AF3D-43CA-8193-6A2DA73BAED4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{BBBEEF9D-E61A-4967-AF88-86A0A1E7EE30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBBEEF9D-E61A-4967-AF88-86A0A1E7EE30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBBEEF9D-E61A-4967-AF88-86A0A1E7EE30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE824E21-392C-4541-B76F-73BB6A1B9D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE824E21-392C-4541-B76F-73BB6A1B9D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE824E21-392C-4541-B76F-73BB6A1B9D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE824E21-392C-4541-B76F-73BB6A1B9D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E4A7D7B-AF3D-43CA-8193-6A2DA73BAED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E4A7D7B-AF3D-43CA-8193-6A2DA73BAED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4A7D7B-AF3D-43CA-8193-6A2DA73BAED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E4A7D7B-AF3D-43CA-8193-6A2DA73BAED4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
