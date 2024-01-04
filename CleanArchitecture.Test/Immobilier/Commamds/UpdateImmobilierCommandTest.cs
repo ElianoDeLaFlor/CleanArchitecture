@@ -41,8 +41,8 @@ namespace CleanArchitecture.Test.Immobilier.Commamds
         [Fact]
         public async Task Handle_ValideData_ShouldUpdate()
         {
-            //Arrange
             _repositoryMock.Setup(r => r.UpdateAsync(It.IsAny<string>(),It.IsAny<Entity.Immobilier>()))
+            //Arrange
                            .Returns(Task.FromResult(new ServiceResponse<Entity.Immobilier> { Success = true, Data = new Entity.Immobilier { Prix = 12345, Publier = true }, Message = "success" }));
             
             var request = new UpdateImmobilierCommand("12345",new ImmobilierDto { Prix = 12345, Publier = true });
