@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Features.Immobilier.Commands.CreateImmobilier;
 using CleanArchitecture.Application.Features.Immobilier.Queries.GetAllImmobilier;
 using CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilierById;
+using CleanArchitecture.Application.Features.Immobilier.Queries.GetImmobilierByReff;
 using CleanArchitecture.Application.Mappers;
 using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Domain.Response;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleanArchitecture.Presentation.Controllers.v1
 {
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[Controller]")]
     [ApiController]
     public class ImmobilierController : ControllerBase
     {
@@ -37,8 +38,7 @@ namespace CleanArchitecture.Presentation.Controllers.v1
         [HttpGet("published/{published}")]
         public async Task<IActionResult> GetPushed(bool published)
         {
-            ServiceResponse<List<Immobilier>> response = new();
-            response = await _mediator.Send(new GetAllImmobilierQuery(published));
+            var response = await _mediator.Send(new GetAllImmobilierQuery(published));
             return response.Success == true ? Ok(response) : BadRequest(response);
         }
 
@@ -50,13 +50,21 @@ namespace CleanArchitecture.Presentation.Controllers.v1
             return response.Success == true ? Ok(response) : BadRequest(response);
         }
 
+        // GET api/<ImmobilierController>/reference/5
+        [HttpGet("reference/{reff}")]
+        public async Task<IActionResult> GetByRefference(string reff)
+        {
+            ServiceResponse<Immobilier> response = await _mediator.Send(new GetImmobilierByReffQuery(reff));
+            return response.Success == true ? Ok(response) : BadRequest(response);
+        }
+
         // POST api/<ImmobilierController>
         [HttpPost]
         public async Task<IActionResult> Post(ImmobilierDto immobilier)
         {
-            ServiceResponse<Immobilier> response = new();
+            //ServiceResponse<Immobilier> response = new();
 
-            response= await _mediator.Send(new CreateImmobilierCommand(immobilier));
+         var   response= await _mediator.Send(new CreateImmobilierCommand(immobilier));
 
             return response.Success==true?Ok(response):BadRequest(response);
 
@@ -75,5 +83,7 @@ namespace CleanArchitecture.Presentation.Controllers.v1
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

@@ -43,7 +43,7 @@ namespace CleanArchitectureSpecFlow.StepDefinitions
         [When(@"I make a POST request on '([^']*)' with this data:")]
         public async Task WhenIMakeAPOSTRequestOnWithThisData(string url, Table table)
         {
-            var immobilier=table.CreateInstance<ImmobilierDto>();
+           var immobilier = table.Rows[0].CreateInstance<ImmobilierDto>();
             _ImmobilierDto = immobilier;
             var content=new StringContent(JsonConvert.SerializeObject(immobilier),Encoding.UTF8,MediaTypeNames.Application.Json);
             

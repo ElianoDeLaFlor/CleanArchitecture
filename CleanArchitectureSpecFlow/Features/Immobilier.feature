@@ -10,6 +10,7 @@ Scenario: add Immobolier
 	When I make a POST request on 'api/v1/immobilier' with this data:
 	| description | localisation | typeImmobilier | typeVente | image | prix | avance | utilisateurId | publier | fullDescription
 	| descrip_one | loc_one      |      1         |     1     |img_one| 12340| 2 mois |   1           | false   |fulldescrip
+	| descrip_two | loc_two      |      2         |     1     |img_two| 3000 | 1 mois |   1           | true	|fulldescrip
 	Then the response status code is 200
 	And a successful response is returned with the newly added Immobolier
 
@@ -33,6 +34,6 @@ Scenario:Get Immobilier by Id
 Scenario:Get Immobilier by Reff
 	Retrieve immobilier based on it is Reff
 	Given The immobilier Reff is 'IMMO-002'
-	When I made a GET request on 'api/v1/immobilier' endpoint with the reff
+	When I made a GET request on 'api/v1/immobilier/reference' endpoint with the reff
 	Then the response status code is 200
 	And a successful response is returned with the the retrieved immobillier data

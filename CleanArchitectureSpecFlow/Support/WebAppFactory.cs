@@ -17,7 +17,7 @@ namespace CleanArchitectureSpecFlow.Support
                 var dbContextDescriptor = services.SingleOrDefault(
                     db => db.ServiceType == typeof(DbContextOptions<DataContext>));
                 
-                //remove the main application dbcontext the service
+                //remove the main application dbcontext from the service
                 if(dbContextDescriptor != null)
                 {
                     services.Remove(dbContextDescriptor);

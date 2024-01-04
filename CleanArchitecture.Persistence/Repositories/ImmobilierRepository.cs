@@ -275,9 +275,30 @@ namespace CleanArchitecture.Persistence.Repositories
             }
         }
 
-        public Task<ServiceResponse<Immobilier>> GetByReffAsync(string label)
+        public async Task<ServiceResponse<Immobilier>> GetByReffAsync(string label)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.Reff == label select item).SingleAsync();
+                var immobilier_entity = _mapper.Map<Immobilier>(rslt);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<List<Immobilier>>> GetFavoriteImmobilier(bool state)
@@ -285,9 +306,30 @@ namespace CleanArchitecture.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeImmobilier(int typeImmobilierId)
+        public async Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeImmobilier(int typeImmobilierId)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.TypeImmobilier == typeImmobilierId select item).ToListAsync();
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeImmobilier(int typeImmobilierId, int pagenumber = 1, int itemperpage = 25)
@@ -295,14 +337,60 @@ namespace CleanArchitecture.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId)
+        public async Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.TypeVente == typeVenteId select item).ToListAsync();
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId, int pagenumber = 1, int itemperpage = 25)
+        public async Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId, int pagenumber = 1, int itemperpage = 25)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Immobiliers where item.TypeVente == typeVenteId
+                                 select item)
+                                 .Skip((pagenumber-1)*itemperpage)
+                                 .Take(itemperpage)
+                                 .ToListAsync();
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<List<Immobilier>>> GetSimillarImmobilier(int typeImmobilierId, int typeVenteId)
