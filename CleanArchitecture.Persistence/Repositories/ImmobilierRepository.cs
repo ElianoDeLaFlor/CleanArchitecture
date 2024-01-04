@@ -1,33 +1,167 @@
 ﻿using CleanArchitecture.Domain.Response;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Repositories;
 using CleanArchitecture.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CleanArchitecture.Domain.Utility;
+using CleanArchitecture.Persistence.Interfaces;
+using CleanArchitecture.Domain.Models;
+using AutoMapper;
+using CleanArchitecture.Persistence.Entities;
 
 namespace CleanArchitecture.Persistence.Repositories
 {
     public class ImmobilierRepository : IImmobilierRepository
     {
         private readonly DataContext _context;
-        public ImmobilierRepository(DataContext context) { _context = context; }
-        public async Task<ServiceResponse<string>> AddPhotoAsync(Immobilier entity)
+        private readonly IMapper _mapper;
+
+        public ImmobilierRepository(DataContext context, IMapper mapper)
         {
-            ServiceResponse<string> response = new();
+            _context = context;
+            _mapper = mapper;
+        }
+        public Task<ServiceResponse<string>> AddPhotoAsync(Immobilier entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResponse<string>> AddVideoAsync(Immobilier entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<List<Immobilier>>> AllAsync(bool published)
+        {
+            ServiceResponse<List<Immobilier>> response = new();
             try
             {
-                entity.DateDeModification = DateTime.Now;
-               _= await _context.immobiliers.AddAsync(entity);
-              _=  await _context.SaveChangesAsync();
+                var rslt = await (from item in _context.Immobiliers where item.Publier == true select item).ToListAsync();
+
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
 
                 response.Success = true;
-                response.Message = "Photo added successfully";
-                response.Data = entity.Photos;    
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
                 return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<Immobilier>> CreateAsync(Immobilier entity)
+        {
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                entity.DateDeCreation= DateTime.Now;
+                entity.DateDeModification=entity.DateDeCreation;
+                entity.Reff = Helper.Code(8);
+
+                var immobilier_entity=_mapper.Map<ImmobilierEntity>(entity);
+                
+
+                _= await _context.Set<ImmobilierEntity>().AddAsync(immobilier_entity);
+                _= await _context.SaveChangesAsync();
+
+
+                var immobilier = _mapper.Map<Immobilier>(immobilier_entity);
+                
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<Immobilier>> DeleteAsync(string id)
+        {
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var itemToDelete = await _context.Immobiliers.FindAsync(id);
+
+                if(itemToDelete != null)
+                {
+                    _ = _context.Immobiliers.Remove(itemToDelete);
+
+                    _context.SaveChanges();
+
+                    var immobilier_entity = _mapper.Map<Immobilier>(itemToDelete);
+
+                    response.Success = true;
+                    response.Message = "Operation complete successfully";
+                    response.Data = immobilier_entity;
+
+                    return response;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Item to delete can not be find";
+                    response.Data = null;
+                    return response;
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                response.Success=false;
+                response.Message = ex.Message;
+                response.Data = null;
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<Immobilier>> DeleteByImmobilierAndTypeImmobilierAsync(string immobilierid, int typeimmobilierid)
+        {
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var itemToDelete = await (from item in _context.Immobiliers where item.Id==immobilierid && item.TypeImmobilier==typeimmobilierid select item).SingleAsync();
+
+                if (itemToDelete != null)
+                {
+                    _ = _context.Immobiliers.Remove(itemToDelete);
+
+                    _=await _context.SaveChangesAsync();
+
+                    var immobilier_entity=_mapper.Map<Immobilier>(itemToDelete);
+
+                    response.Success = true;
+                    response.Message = "Operation complete successfully";
+                    response.Data = immobilier_entity;
+
+                    return response;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Item to delete can not be find";
+                    response.Data = null;
+                    return response;
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -38,67 +172,133 @@ namespace CleanArchitecture.Persistence.Repositories
             }
         }
 
-        public async Task<ServiceResponse<string>> AddVideoAsync(Immobilier entity)
+        public async Task<ServiceResponse<Immobilier>> DuplicateImmobilier(string immobilierId)
         {
-            ServiceResponse<string> response = new();
+            ServiceResponse<Immobilier> response = new();
+
             try
             {
-                entity.DateDeModification = DateTime.Now;
-                _ = _context.Entry(entity).State=EntityState.Modified;
-                _ = await _context.SaveChangesAsync();
+                //get immobilier to duplicate
+                var itemToDuplicate= await _context.Immobiliers.Where(i=>i.Id==immobilierId).SingleAsync();
+                
+                if (itemToDuplicate != null)
+                {
+                    var itemDuplicated=new ImmobilierEntity();
+                    itemDuplicated = itemToDuplicate;
+                    itemDuplicated.DateDeCreation = DateTime.Now;
+                    itemDuplicated.DateDeModification = itemDuplicated.DateDeCreation;
+                    itemDuplicated.Favorit = false;
+                    itemDuplicated.Publier = false;
+                    itemDuplicated.Finaliser = false;
+                    itemDuplicated.Reff = Helper.Code(8);
+                    itemDuplicated.Id=Helper.Code(28);
+
+                    _=_context.Add(itemDuplicated);
+
+                    _=await _context.SaveChangesAsync();
+
+                    var immobilier_entity = _mapper.Map<Immobilier>(itemDuplicated);
+
+                    response.Success = true;
+                    response.Message = "Item duplicate successfully";
+                    response.Data = immobilier_entity;
+
+                    return response;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Item to duplicate can not be find";
+                    response.Data = null;
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = true;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<List<Immobilier>>> GetAllAsync()
+        {
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var result = await (from item in _context.Set<ImmobilierEntity>() select item).ToListAsync();
+                var dataList = _mapper.Map<List<Immobilier>>(result);
 
                 response.Success = true;
-                response.Message = "Photo added successfully";
-                response.Data = entity.Photos;
+                response.Message = "Operation completed successfully";
+                response.Data = dataList;
+
                 return response;
             }
             catch (Exception ex)
             {
+
                 response.Success = false;
                 response.Message = ex.Message;
                 response.Data = null;
+
+                return response;
+            }
+
+        }
+
+        public async Task<ServiceResponse<Immobilier>> GetByIdAsync(string id)
+        {
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.Id == id select item).SingleAsync();
+                var immobilier_entity=_mapper.Map<Immobilier>(rslt);
+                
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
                 return response;
             }
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> AllAsync(bool published)
+        public async Task<ServiceResponse<Immobilier>> GetByReffAsync(string label)
         {
-            throw new NotImplementedException();
-        }
+            ServiceResponse<Immobilier> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.Reff == label select item).SingleAsync();
+                var immobilier_entity = _mapper.Map<Immobilier>(rslt);
 
-        public Task<ServiceResponse<Immobilier>> CreateAsync(Immobilier entity)
-        {
-            throw new NotImplementedException();
-        }
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
 
-        public Task<ServiceResponse<Immobilier>> DeleteAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
+                return response;
 
-        public Task<ServiceResponse<int>> DeleteByImmobilierAndTypeImmobilierAsync(string immobilierid, int typeimmobilierid)
-        {
-            throw new NotImplementedException();
-        }
+            }
+            catch (Exception ex)
+            {
 
-        public Task<ServiceResponse<Immobilier>> DuplicateImmobilier(string immobilierId)
-        {
-            throw new NotImplementedException();
-        }
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
 
-        public Task<ServiceResponse<List<Immobilier>>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ServiceResponse<Immobilier>> GetByIdAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ServiceResponse<Immobilier>> GetByReffAsync(string label)
-        {
-            throw new NotImplementedException();
+                return response;
+            }
         }
 
         public Task<ServiceResponse<List<Immobilier>>> GetFavoriteImmobilier(bool state)
@@ -106,9 +306,30 @@ namespace CleanArchitecture.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeImmobilier(int typeImmobilierId)
+        public async Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeImmobilier(int typeImmobilierId)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.TypeImmobilier == typeImmobilierId select item).ToListAsync();
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeImmobilier(int typeImmobilierId, int pagenumber = 1, int itemperpage = 25)
@@ -116,14 +337,60 @@ namespace CleanArchitecture.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId)
+        public async Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Set<ImmobilierEntity>() where item.TypeVente == typeVenteId select item).ToListAsync();
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
-        public Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId, int pagenumber = 1, int itemperpage = 25)
+        public async Task<ServiceResponse<List<Immobilier>>> GetImmobilierByTypeVente(int typeVenteId, int pagenumber = 1, int itemperpage = 25)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Immobilier>> response = new();
+            try
+            {
+                var rslt = await(from item in _context.Immobiliers where item.TypeVente == typeVenteId
+                                 select item)
+                                 .Skip((pagenumber-1)*itemperpage)
+                                 .Take(itemperpage)
+                                 .ToListAsync();
+                var immobilier_entity = _mapper.Map<List<Immobilier>>(rslt);
+
+                response.Success = true;
+                response.Message = "Operation completed successfully";
+                response.Data = immobilier_entity;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                response.Success = false;
+                response.Message = ex.Message;
+                response.Data = null;
+
+                return response;
+            }
         }
 
         public Task<ServiceResponse<List<Immobilier>>> GetSimillarImmobilier(int typeImmobilierId, int typeVenteId)
@@ -171,7 +438,7 @@ namespace CleanArchitecture.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<Immobilier>> UpdateAsync(Immobilier entity)
+        public Task<ServiceResponse<Immobilier>> UpdateAsync(string id, Immobilier entity)
         {
             throw new NotImplementedException();
         }

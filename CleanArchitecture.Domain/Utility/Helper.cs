@@ -12,7 +12,7 @@ namespace CleanArchitecture.Domain.Utility
         {
             Random r = new();
             string codeTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < length; i++)
             {
                 int index = r.Next(1, 63);
