@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Models
 {
-    public class Utilisateur
+    public class LoginResponse
     {
+        public string Token { get; set; } = string.Empty;
+        public DateTime Expiration { get; set; }
     }
 }

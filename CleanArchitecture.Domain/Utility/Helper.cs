@@ -20,5 +20,9 @@ namespace CleanArchitecture.Domain.Utility
             }
             return sb.ToString();
         }
+        public static bool ValidateUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

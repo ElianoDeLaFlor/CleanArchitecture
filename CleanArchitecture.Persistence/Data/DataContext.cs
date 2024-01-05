@@ -1,5 +1,7 @@
 ﻿using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Persistence.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Persistence.Data
 {
-    public class DataContext:DbContext
+    public class DataContext:IdentityUserContext<IdentityUser>
     {
         public DataContext()
         {
@@ -27,12 +29,8 @@ namespace CleanArchitecture.Persistence.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure entity mappings, relationships, etc.
-            
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ImmobilierEntity>().Property(p => p.Prix).HasPrecision(18, 4);
             
         }
     }
